@@ -13,7 +13,7 @@ from .errors import (
     CouldNotTweet,
     TweetNotAvailable,
     TwitterException,
-    raise_exceptions_from_response
+    raise_exceptions_from_response, TwoFactorChallenge, LoginAcid
 )
 from .group import Group, GroupMessage
 from .http import HTTPClient
@@ -113,6 +113,7 @@ class Client:
         auth_info_1: str,
         auth_info_2: str | None = None,
         password: str,
+        verification_code: str | None = None,
     ) -> dict:
         """
         Logs into the account using the specified login information.
@@ -133,6 +134,8 @@ class Client:
             It can be a username, email address, or phone number.
         password : str
             The password associated with the account.
+        verification_code : str
+            Code from email for 2fa or verification process.
 
         Examples
         --------
@@ -235,13 +238,15 @@ class Client:
         self._user_id = find_dict(response, 'id_str')[0]
 
         if task_id == 'LoginTwoFactorAuthChallenge':
-            print(find_dict(response, 'secondary_text')[0]['text'])
+            if not verification_code:
+                raise TwoFactorChallenge
+
             response = _execute_task(
                 flow_token,
                 {
                     'subtask_id': 'LoginTwoFactorAuthChallenge',
                     'enter_text': {
-                        'text': input('>>> '),
+                        'text': verification_code,
                         'link': 'next_link'
                     }
                 }
@@ -249,13 +254,15 @@ class Client:
             task_id = response['subtasks'][0]['subtask_id']
 
         if task_id == 'LoginAcid':
-            print(find_dict(response, 'secondary_text')[0]['text'])
+            if not verification_code:
+                raise LoginAcid
+
             response = _execute_task(
                 flow_token,
                 {
                     'subtask_id': 'LoginAcid',
                     'enter_text': {
-                        'text': input('>>> '),
+                        'text': verification_code,
                         'link': 'next_link'
                     }
                 }
