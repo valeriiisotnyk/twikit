@@ -3,61 +3,85 @@ class TwitterException(Exception):
     Base class for Twitter API related exceptions.
     """
 
+
+class TwoFactorChallenge(Exception):
+    """
+    Exception raised for LoginTwoFactorAuthChallenge.
+    """
+
+
+class LoginAcid(Exception):
+    """
+    Exception raised for LoginAcid.
+    """
+
+
 class BadRequest(TwitterException):
     """
     Exception raised for 400 Bad Request errors.
     """
+
 
 class Unauthorized(TwitterException):
     """
     Exception raised for 401 Unauthorized errors.
     """
 
+
 class Forbidden(TwitterException):
     """
     Exception raised for 403 Forbidden errors.
     """
+
 
 class NotFound(TwitterException):
     """
     Exception raised for 404 Not Found errors.
     """
 
+
 class RequestTimeout(TwitterException):
     """
     Exception raised for 408 Request Timeout errors.
     """
+
 
 class TooManyRequests(TwitterException):
     """
     Exception raised for 429 Too Many Requests errors.
     """
 
+
 class ServerError(TwitterException):
     """
     Exception raised for 5xx Server Error responses.
     """
+
 
 class CouldNotTweet(TwitterException):
     """
     Exception raised when a tweet could not be sent.
     """
 
+
 class DuplicateTweet(CouldNotTweet):
     """
     Exception raised when a tweet is a duplicate of another.
     """
+
 
 class TweetNotAvailable(TwitterException):
     """
     Exceptions raised when a tweet is not available.
     """
 
+
 class InvalidMedia(TwitterException):
     """
     Exception raised when there is a problem with the media ID
     sent with the tweet.
     """
+
 
 ERROR_CODE_TO_EXCEPTION: dict[int, TwitterException] = {
     187: DuplicateTweet,
