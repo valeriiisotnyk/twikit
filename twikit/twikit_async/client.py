@@ -866,7 +866,8 @@ class Client:
         poll_uri: str | None = None,
         reply_to: str | None = None,
         conversation_control: Literal[
-            'followers', 'verified', 'mentioned'] | None = None
+            'followers', 'verified', 'mentioned'] | None = None,
+        attachment_url: str | None = None
     ) -> Tweet:
         """
         Creates a new tweet on Twitter with the specified
@@ -889,6 +890,8 @@ class Client:
             - 'followers': Limits replies to followers only.
             - 'verified': Limits replies to verified accounts only.
             - 'mentioned': Limits replies to mentioned accounts only.
+        attachment_url : str
+            URL of the tweet to be quoted.
 
         Returns
         -------
@@ -958,6 +961,9 @@ class Client:
             variables['conversation_control'] = {
                 'mode': limit_mode
             }
+
+        if attachment_url is not None:
+            variables['attachment_url'] = attachment_url
 
         data = {
             'variables': variables,
