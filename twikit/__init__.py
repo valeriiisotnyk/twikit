@@ -11,6 +11,8 @@ from .group import Group, GroupMessage
 from .list import List
 from .errors import (
     BadRequest,
+    TwoFactorChallenge,
+    LoginAcid,
     Forbidden,
     NotFound,
     RequestTimeout,
@@ -25,4 +27,4 @@ from .tweet import ScheduledTweet, Tweet
 from .user import User
 from .utils import build_query
 
-__version__ = '1.3.14'
+__version__ = '1.3.15'
