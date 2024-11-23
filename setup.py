@@ -12,11 +12,13 @@ setup(
     name='twikit',
     version=version,
     install_requires=[
-        'httpx',
-        'fake_useragent',
-        'filetype'
+        'httpx[socks]',
+        'filetype',
+        'beautifulsoup4',
+        'pyotp',
+        'lxml'
     ],
-    python_requires='>=3.9',
+    python_requires='>=3.8',
     description='Twitter API wrapper for python with **no API key required**.',
     long_description=long_description,
     long_description_content_type='text/markdown',

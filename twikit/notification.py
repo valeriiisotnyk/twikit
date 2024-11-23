@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .client import Client
+    from .client.client import Client
     from .tweet import Tweet
     from .user import User
 
@@ -12,17 +12,17 @@ class Notification:
     """
     Attributes
     ----------
-    id : str
+    id : :class:`str`
         The unique identifier of the notification.
-    timestamp_ms : int
+    timestamp_ms : :class:`int`
         The timestamp of the notification in milliseconds.
-    icon : dict
+    icon : :class:`dict`
         Dictionary containing icon data for the notification.
-    message : str
+    message : :class:`str`
         The message text of the notification.
-    tweet : Tweet
+    tweet : :class:`.Tweet`
         The tweet associated with the notification.
-    from_user : User
+    from_user : :class:`.User`
         The user who triggered the notification.
     """
     def __init__(

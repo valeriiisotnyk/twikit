@@ -1,3 +1,5 @@
-httpx
-fake_useragent
+httpx[socks]
 filetype
+beautifulsoup4
+pyotp
+lxml

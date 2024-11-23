@@ -9,54 +9,45 @@
 [![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/nCrByrr8cX)
 [![BuyMeACoffee](https://img.shields.io/badge/-buy_me_a%C2%A0coffee-gray?logo=buy-me-a-coffee)](https://www.buymeacoffee.com/d60py)
 
-[[日本語](https://github.com/d60/twikit/blob/main/README-ja.md)]
+[[English](https://github.com/d60/twikit/blob/main/README.md)]
 [[中文](https://github.com/d60/twikit/blob/main/README-zh.md)]
-
 
 # Twikit <img height="35"  src="https://i.imgur.com/9HSdIl4.png"  valign="bottom">
 
-A Simple Twitter API Scraper
+このライブラリを使用することで、APIキーなしで、ツイートの投稿や検索などの機能を使用することができます。
 
-You can use functions such as posting or searching for tweets without an API key using this library.
+- [ドキュメント](https://twikit.readthedocs.io/en/latest/twikit.html)
 
-- [Documentation (English)](https://twikit.readthedocs.io/en/latest/twikit.html)
-
-
-🔵 [Discord](https://discord.gg/nCrByrr8cX)
-
-> [!IMPORTANT]
-> With the release of version 2.0.0 on July 11, there have been some specification changes, including the discontinuation of the synchronous version. Existing code will no longer work with v2.0.0 or later, so please refer to the [documentation](https://twikit.readthedocs.io/en/latest/twikit.html) or the code in the [examples folder](https://github.com/d60/twikit/tree/main/examples) for adjustments.
-> We apologize for any inconvenience this may cause.
+[Discord](https://discord.gg/nCrByrr8cX)
 
 
 
+## 特徴
 
-## Features
+### APIキー不要
 
-### No API Key Required
+このライブラリは、ツイッターの非公式APIを使用しているため、APIキーは必要ありません。
 
-This library uses scraping and does not require an API key.
+### 無料
 
-### Free
-
-This library is free to use.
-
-
-## Functionality
-
-By using Twikit, you can access functionalities such as the following:
-
--  Create tweets
-
--  Search tweets
-
--  Retrieve trending topics
-
-- etc...
+このライブラリは、無料で使用することができます。
 
 
+## 機能
 
-## Installing
+このライブラリを使用することで、
+
+-  ツイートの投稿
+
+-  ツイートの検索
+
+-  トレンドの取得
+
+などのさまざまな機能を使用することができます。
+
+
+
+## インストール
 
 ```bash
 
@@ -65,10 +56,9 @@ pip install twikit
 ```
 
 
+## 使用例
 
-## Quick Example
-
-**Define a client and log in to the account.**
+**クライアントを定義し、アカウントにログインする。**
 
 ```python
 import asyncio
@@ -82,7 +72,8 @@ PASSWORD = 'password0000'
 client = Client('en-US')
 
 async def main():
-    await client.login(
+    # アカウントにログイン
+    client.login(
         auth_info_1=USERNAME ,
         auth_info_2=EMAIL,
         password=PASSWORD
@@ -91,16 +82,16 @@ async def main():
 asyncio.run(main())
 ```
 
-**Create a tweet with media attached.**
+**メディア付きツイートを作成する。**
 
 ```python
-# Upload media files and obtain media_ids
+# メディアをアップロードし、メディアIDを取得する。
 media_ids = [
     await client.upload_media('media1.jpg'),
     await client.upload_media('media2.jpg')
 ]
 
-# Create a tweet with the provided text and attached media
+# ツイートを投稿する
 await client.create_tweet(
     text='Example Tweet',
     media_ids=media_ids
@@ -108,7 +99,7 @@ await client.create_tweet(
 
 ```
 
-**Search the latest tweets based on a keyword**
+**ツイートを検索する**
 ```python
 tweets = await client.search_tweet('python', 'Latest')
 
@@ -120,29 +111,17 @@ for tweet in tweets:
     )
 ```
 
-**Retrieve user tweets**
+**ユーザーのツイートを取得する**
 ```python
-tweets = await client.get_user_tweets('123456', 'Tweets')
+tweets = await client.get_user_tweets('123456', 'Tweet')
 
 for tweet in tweets:
     print(tweet.text)
 ```
 
-**Send a dm**
-```python
-await client.send_dm('123456789', 'Hello')
-```
-
-**Get trends**
+**トレンドを取得する**
 ```python
 await client.get_trends('trending')
 ```
 
-More Examples: [examples](https://github.com/d60/twikit/tree/main/examples) <br>
-
-## Contributing
-
-If you encounter any bugs or issues, please report them on [issues](https://github.com/d60/twikit/issues).
-
-
-If you find this library useful, consider starring this repository⭐️
+[examples](https://github.com/d60/twikit/tree/main/examples)<br>

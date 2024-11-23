@@ -8,7 +8,7 @@ from .utils import timestamp_to_datetime
 if TYPE_CHECKING:
     from httpx import Response
 
-    from .client import Client
+    from .client.client import Client
     from .tweet import Tweet
     from .user import User
     from .utils import Result
@@ -20,32 +20,32 @@ class List:
 
     Attributes
     ----------
-    id : str
+    id : :class:`str`
         The unique identifier of the List.
-    created_at : int
+    created_at : :class:`int`
         The timestamp when the List was created.
-    default_banner : dict
+    default_banner : :class:`dict`
         Information about the default banner of the List.
-    banner : dict
+    banner : :class:`dict`
         Information about the banner of the List. If custom banner is not set,
         it defaults to the default banner.
-    description : str
+    description : :class:`str`
         The description of the List.
-    following : bool
+    following : :class:`bool`
         Indicates if the authenticated user is following the List.
-    is_member : bool
+    is_member : :class:`bool`
         Indicates if the authenticated user is a member of the List.
-    member_count : int
+    member_count : :class:`int`
         The number of members in the List.
-    mode : Literal['Private', 'Public']
+    mode : {'Private', 'Public'}
         The mode of the List, either 'Private' or 'Public'.
-    muting : bool
+    muting : :class:`bool`
         Indicates if the authenticated user is muting the List.
-    name : str
+    name : :class:`str`
         The name of the List.
-    pinning : bool
+    pinning : :class:`bool`
         Indicates if the List is pinned.
-    subscriber_count : int
+    subscriber_count : :class:`int`
         The number of subscribers to the List.
     """
     def __init__(self, client: Client, data: dict) -> None:
@@ -74,34 +74,34 @@ class List:
     def created_at_datetime(self) -> datetime:
         return timestamp_to_datetime(self.created_at)
 
-    def edit_banner(self, media_id: str) -> Response:
+    async def edit_banner(self, media_id: str) -> Response:
         """
         Edit the banner image of the list.
 
         Parameters
         ----------
-        media_id : str
+        media_id : :class:`str`
             The ID of the media to use as the new banner image.
 
         Returns
         -------
-        httpx.Response
+        :class:`httpx.Response`
             Response returned from twitter api.
 
         Examples
         --------
-        >>> media_id = client.upload_media('image.png')
-        >>> media.edit_banner(media_id)
+        >>> media_id = await client.upload_media('image.png')
+        >>> await media.edit_banner(media_id)
         """
-        return self._client.edit_list_banner(self.id, media_id)
+        return await self._client.edit_list_banner(self.id, media_id)
 
-    def delete_banner(self) -> Response:
+    async def delete_banner(self) -> Response:
         """
         Deletes the list banner.
         """
-        return self._client.delete_list_banner(self.id)
+        return await self._client.delete_list_banner(self.id)
 
-    def edit(
+    async def edit(
         self,
         name: str | None = None,
         description: str | None = None,
@@ -112,40 +112,42 @@ class List:
 
         Parameters
         ----------
-        name : str, default=None
+        name : :class:`str`, default=None
             The new name for the list.
-        description : str, default=None
+        description : :class:`str`, default=None
             The new description for the list.
-        is_private : bool, default=None
+        is_private : :class:`bool`, default=None
             Indicates whether the list should be private
             (True) or public (False).
 
         Returns
         -------
-        List
+        :class:`List`
             The updated Twitter list.
 
         Examples
         --------
-        >>> list.edit(
+        >>> await list.edit(
         ...     'new name', 'new description', True
         ... )
         """
-        return self._client.edit_list(self.id, name, description, is_private)
+        return await self._client.edit_list(
+            self.id, name, description, is_private
+        )
 
-    def add_member(self, user_id: str) -> Response:
+    async def add_member(self, user_id: str) -> Response:
         """
         Adds a member to the list.
         """
-        return self._client.add_list_member(self.id, user_id)
+        return await self._client.add_list_member(self.id, user_id)
 
-    def remove_member(self, user_id: str) -> Response:
+    async def remove_member(self, user_id: str) -> Response:
         """
         Removes a member from the list.
         """
-        return self._client.remove_list_member(self.id, user_id)
+        return await self._client.remove_list_member(self.id, user_id)
 
-    def get_tweets(
+    async def get_tweets(
         self, count: int = 20, cursor: str | None = None
     ) -> Result[Tweet]:
         """
@@ -153,19 +155,19 @@ class List:
 
         Parameters
         ----------
-        count : int, default=20
+        count : :class:`int`, default=20
             The number of tweets to retrieve.
-        cursor : str, default=None
+        cursor : :class:`str`, default=None
             The cursor for pagination.
 
         Returns
         -------
-        Result[Tweet]
+        Result[:class:`Tweet`]
             A Result object containing the retrieved tweets.
 
         Examples
         --------
-        >>> tweets = list.get_tweets()
+        >>> tweets = await list.get_tweets()
         >>> for tweet in tweets:
         ...    print(tweet)
         <Tweet id="...">
@@ -173,7 +175,7 @@ class List:
         ...
         ...
 
-        >>> more_tweets = tweets.next()  # Retrieve more tweets
+        >>> more_tweets = await tweets.next()  # Retrieve more tweets
         >>> for tweet in more_tweets:
         ...     print(tweet)
         <Tweet id="...">
@@ -181,21 +183,21 @@ class List:
         ...
         ...
         """
-        return self._client.get_list_tweets(self.id, count, cursor)
+        return await self._client.get_list_tweets(self.id, count, cursor)
 
-    def get_members(
+    async def get_members(
         self, count: int = 20, cursor: str | None = None
     ) -> Result[User]:
         """Retrieves members of the list.
 
         Parameters
         ----------
-        count : int, default=20
+        count : :class:`int`, default=20
             Number of members to retrieve.
 
         Returns
         -------
-        Result[User]
+        Result[:class:`User`]
             Members of the list
 
         Examples
@@ -209,21 +211,21 @@ class List:
         ...
         >>> more_members = members.next()  # Retrieve more members
         """
-        return self._client.get_list_members(self.id, count, cursor)
+        return await self._client.get_list_members(self.id, count, cursor)
 
-    def get_subscribers(
+    async def get_subscribers(
         self, count: int = 20, cursor: str | None = None
     ) -> Result[User]:
         """Retrieves subscribers of the list.
 
         Parameters
         ----------
-        count : int, default=20
+        count : :class:`int`, default=20
             Number of subscribers to retrieve.
 
         Returns
         -------
-        Result[User]
+        Result[:class:`User`]
             Subscribers of the list
 
         Examples
@@ -237,7 +239,11 @@ class List:
         ...
         >>> more_subscribers = subscribers.next()  # Retrieve more subscribers
         """
-        return self._client.get_list_subscribers(self.id, count, cursor)
+        return await self._client.get_list_subscribers(self.id, count, cursor)
+
+    async def update(self) -> None:
+        new = await self._client.get_list(self.id)
+        self.__dict__.update(new.__dict__)
 
     def __eq__(self, __value: object) -> bool:
         return isinstance(__value, List) and self.id == __value.id
